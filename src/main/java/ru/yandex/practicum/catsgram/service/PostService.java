@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.catsgram.exception.PostNotFoundException;
 import ru.yandex.practicum.catsgram.exception.UserNotFoundException;
 import ru.yandex.practicum.catsgram.model.Post;
-import ru.yandex.practicum.catsgram.model.User;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,13 +24,11 @@ public class PostService {
     }
 
     public Post create(Post post) {
-        User postAuthor = userService.findUserByEmail(post.getAuthor());
-        if (postAuthor == null) {
-            throw new UserNotFoundException(String.format(
-                    "Пользователь %s не найден",
-                    post.getAuthor()));
-        }
-
+        // Проверяем, существует ли указанный автор
+        userService.findUserById(post.getAuthor())
+                .orElseThrow(() ->
+                        new UserNotFoundException(String.format("Пользователь %s не найден", post.getAuthor()))
+                );
         post.setId(getNextId());
         posts.add(post);
         return post;
