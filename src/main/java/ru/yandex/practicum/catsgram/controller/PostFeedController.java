@@ -8,8 +8,6 @@ import ru.yandex.practicum.catsgram.exception.IncorrectParameterException;
 import ru.yandex.practicum.catsgram.model.FeedParams;
 import ru.yandex.practicum.catsgram.model.Post;
 import ru.yandex.practicum.catsgram.service.PostService;
-
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +36,7 @@ public class PostFeedController {
         }
         List<Post> result = new ArrayList<>();
         for (String friendEmail : feedParams.getFriendsEmails()) {
-            result.addAll(postService.findAllByUserEmail(friendEmail, feedParams.getSize(), feedParams.getSort()));
+            result.addAll(postService.findPostsByUser(friendEmail, feedParams.getSize(), feedParams.getSort()));
         }
         return result;
     }
